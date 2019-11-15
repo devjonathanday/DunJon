@@ -17,10 +17,9 @@ public class ViewControls : MonoBehaviour
             cam.orthographicSize = Mathf.Clamp(cam.orthographicSize -= cam.orthographicSize * zoomSpeed, orthoSizeRange.x, orthoSizeRange.y);
         if (Input.mouseScrollDelta.y < 0)
             cam.orthographicSize = Mathf.Clamp(cam.orthographicSize += cam.orthographicSize * zoomSpeed, orthoSizeRange.x, orthoSizeRange.y);
-        if (!Input.GetMouseButton(2))
-        {
-            mouseDragStart = cam.ScreenToWorldPoint(Input.mousePosition);
-        }
+
+        if (!Input.GetMouseButton(2)) { mouseDragStart = cam.ScreenToWorldPoint(Input.mousePosition); }
+
         if (Input.GetMouseButton(2))
         {
             Vector2 difference = mouseDragStart - cam.ScreenToWorldPoint(Input.mousePosition);
