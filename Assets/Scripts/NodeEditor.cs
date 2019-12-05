@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class NodeEditor
 {
-    public enum IOTYPE { INTEGER, FLOAT, VEC2, VEC3 }
-    public static CommonContainer FindCommonContainer()
+    public enum IOTYPE { ANY, INTEGER, FLOAT, VEC2, VEC3, ROOM, DUNGEONOBJ }
+
+    public void Compile()
     {
-        return GameObject.FindGameObjectWithTag("CommonContainer").GetComponent<CommonContainer>();
+
     }
 }

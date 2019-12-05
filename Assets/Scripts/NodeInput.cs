@@ -5,5 +5,6 @@ using UnityEngine;
 public class NodeInput : MonoBehaviour
 {
     public object value;
+    public bool used;
     public NodeEditor.IOTYPE inputType;
 }

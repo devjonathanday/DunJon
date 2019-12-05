@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEditor;
 
-public class NodeOutput : Button, IPointerDownHandler
+public class NodeOutput : MonoBehaviour, IPointerDownHandler
 {
     Camera cam;
     [SerializeField] public object value;
@@ -13,7 +13,7 @@ public class NodeOutput : Button, IPointerDownHandler
     public LineConnector linePrefab;
     [SerializeField] LineConnector lineReference;
 
-    protected override void Start()
+    void Start()
     {
         cam = Camera.main;
     }
@@ -30,7 +30,6 @@ public class NodeOutput : Button, IPointerDownHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            base.OnPointerDown(eventData);
             lineReference = Instantiate(linePrefab);
             lineReference.StartLine(this);
         }
@@ -42,23 +41,15 @@ public class NodeOutput : Button, IPointerDownHandler
         {
             if (hitInfo.collider.gameObject.TryGetComponent(out NodeInput nodeInput))
             {
-                if (outputType == nodeInput.inputType)
+                if (!nodeInput.used && outputType == nodeInput.inputType)
                 {
                     nodeInput.value = value;
+                    nodeInput.used = true;
                     lineReference.FinishLine(nodeInput);
                     return;
                 }
             }
         }
         Destroy(lineReference.gameObject);
-    }
-}
-
-[CustomEditor(typeof(NodeOutput))]
-public class NodeOutputEditor : UnityEditor.UI.ButtonEditor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
     }
 }

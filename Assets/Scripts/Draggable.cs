@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Draggable : Button, IPointerDownHandler, IPointerUpHandler
+public class Draggable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public bool dragging { get; set; }
     Vector3 mouseDragStart;
     Camera cam;
-    protected override void Start()
+    void Start()
     {
-        base.Start();
         cam = Camera.main;
     }
     
@@ -30,17 +29,19 @@ public class Draggable : Button, IPointerDownHandler, IPointerUpHandler
     void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            base.OnPointerDown(eventData);
-            dragging = true;
-        }
+            PointerDown();
     }
     void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            base.OnPointerUp(eventData);
-            dragging = false;
-        }
+            PointerUp();
+    }
+    public void PointerDown()
+    {
+        dragging = true;
+    }
+    public void PointerUp()
+    {
+        dragging = false;
     }
 }

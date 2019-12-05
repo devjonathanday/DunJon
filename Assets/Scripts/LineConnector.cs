@@ -41,6 +41,5 @@ public class LineConnector : MonoBehaviour
         finished = true;
         end = endObject;
         end.value = start.value;
-        Debug.Log(end.value);
     }
 }
