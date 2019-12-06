@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class LineConnector : MonoBehaviour
+public class LineConnector : MonoBehaviour, IPointerClickHandler
 {
     public LineRenderer line;
     public NodeOutput start;
     public NodeInput end;
     public bool finished;
+    public CapsuleCollider collider;
     Camera cam;
 
     void Start()
@@ -28,6 +29,7 @@ public class LineConnector : MonoBehaviour
         {
             line.SetPosition(0, start.transform.position);
             line.SetPosition(1, end.transform.position);
+            UpdateLineCollider();
         }
     }
 
@@ -38,8 +40,37 @@ public class LineConnector : MonoBehaviour
     }
     public void FinishLine(NodeInput endObject)
     {
-        finished = true;
         end = endObject;
+        end.used = true;
+        end.lineReference = this;
         end.value = start.value;
+        finished = true;
+    }
+    public void DeleteLine()
+    {
+        start.value = null;
+        end.value = null;
+
+        end.used = false;
+
+        start.lineReference = null;
+        Destroy(gameObject);
+    }
+    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+    {
+        if(eventData.button == PointerEventData.InputButton.Right)
+            DeleteLine();
+    }
+    void UpdateLineCollider()
+    {
+        transform.position = (line.GetPosition(0) + line.GetPosition(1)) / 2;
+        Vector3 lineVector = line.GetPosition(1) - line.GetPosition(0);
+        transform.rotation = Quaternion.AngleAxis(Mathf.Rad2Deg * Mathf.Atan2(lineVector.y, lineVector.x), Vector3.forward);
+        collider.height = (line.GetPosition(1) - line.GetPosition(0)).magnitude;
+    }
+    void OnMouseDown()
+    {
+        if(Input.GetKey(KeyCode.LeftControl))
+        DeleteLine();
     }
 }

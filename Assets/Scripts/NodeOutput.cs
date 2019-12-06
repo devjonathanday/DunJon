@@ -11,7 +11,7 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
     [SerializeField] public object value;
     public NodeEditor.IOTYPE outputType;
     public LineConnector linePrefab;
-    [SerializeField] LineConnector lineReference;
+    public LineConnector lineReference;
 
     void Start()
     {
@@ -41,7 +41,15 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
         {
             if (hitInfo.collider.gameObject.TryGetComponent(out NodeInput nodeInput))
             {
-                if (!nodeInput.used && outputType == nodeInput.inputType)
+                if(nodeInput.inputType == NodeEditor.IOTYPE.ANY)
+                {
+                    nodeInput.value = value;
+                    nodeInput.used = true;
+                    nodeInput.inputType = outputType;
+                    lineReference.FinishLine(nodeInput);
+                    return;
+                }
+                else if (!nodeInput.used && outputType == nodeInput.inputType)
                 {
                     nodeInput.value = value;
                     nodeInput.used = true;
@@ -50,6 +58,6 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
                 }
             }
         }
-        Destroy(lineReference.gameObject);
+        Destroy(lineReference.gameObject); //Destroy instead of DeleteLine(), because LineConnector's references are not populated yet
     }
 }
