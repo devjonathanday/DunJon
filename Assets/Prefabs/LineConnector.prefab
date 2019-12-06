@@ -49,7 +49,7 @@ MonoBehaviour:
   start: {fileID: 0}
   end: {fileID: 0}
   finished: 0
-  collider: {fileID: -1062831758192841626}
+  clickCollider: {fileID: -1062831758192841626}
 --- !u!120 &7474629869415383052
 LineRenderer:
   m_ObjectHideFlags: 0

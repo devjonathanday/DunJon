@@ -4,13 +4,14 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class Value_Integer : MonoBehaviour
+public class Value_Integer : Node_Generic
 {
     public TMP_InputField inputField;
-    public NodeOutput output;
-    
-    void Update()
+
+    public override void Refresh()
     {
-        output.value = int.Parse(inputField.text);
+        if (outputs.Count == 0)
+            Debug.LogError("Integer Node " + gameObject.GetInstanceID() + " has no output node assiged.");
+        else outputs[0].value = int.Parse(inputField.text);
     }
 }

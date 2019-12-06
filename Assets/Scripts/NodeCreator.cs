@@ -5,13 +5,19 @@ using UnityEngine;
 public class NodeCreator : MonoBehaviour
 {
     public GameObject creatorPanel;
+    public GameObject helpPanel;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
             creatorPanel.SetActive(true);
-        if (Input.GetKeyUp(KeyCode.LeftAlt))
+        if (Input.GetKeyUp(KeyCode.LeftControl))
             creatorPanel.SetActive(false);
+
+        if (Input.GetKeyDown(KeyCode.H))
+            helpPanel.SetActive(true);
+        if (Input.GetKeyUp(KeyCode.H))
+            helpPanel.SetActive(false);
     }
 }
 

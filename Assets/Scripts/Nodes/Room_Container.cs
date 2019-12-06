@@ -2,25 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room_Container : MonoBehaviour
+public class Room_Container : Node_Generic
 {
-    public NodeInput widthInput;
-    public NodeInput heightInput;
-    int width;
-    int height;
+    [SerializeField] int width;
+    [SerializeField] int height;
 
-    void Start()
+    public override void Refresh()
     {
-        
-    }
-    
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            width = (int)widthInput.value;
-            height = (int)heightInput.value;
-            Debug.Log("Room Size = (" + width + "," + height + ")");
-        }
+        if (inputs.Count == 0)
+            Debug.LogError("Room Node " + gameObject.GetInstanceID() + " has missing parameters.");
+
+        if (inputs[0].value != null) width = (int)inputs[0].value;
+        if (inputs[1].value != null) height = (int)inputs[1].value;
     }
 }

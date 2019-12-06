@@ -115,8 +115,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: "0\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1561519167f63b241bb0bd617b788a54, type: 2}
+  m_sharedMaterial: {fileID: 7334711177383041743, guid: 1561519167f63b241bb0bd617b788a54,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -270,8 +271,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1561519167f63b241bb0bd617b788a54, type: 2}
+  m_sharedMaterial: {fileID: 7334711177383041743, guid: 1561519167f63b241bb0bd617b788a54,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -425,8 +427,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Value (Integer)
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1561519167f63b241bb0bd617b788a54, type: 2}
+  m_sharedMaterial: {fileID: 7334711177383041743, guid: 1561519167f63b241bb0bd617b788a54,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -617,8 +620,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1adb14a3602b34240a84f9a14f7b37a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputs: []
+  outputs:
+  - {fileID: 8777672463723322874}
+  priority: 0
   inputField: {fileID: 8777672465261513566}
-  output: {fileID: 8777672463723322874}
 --- !u!1 &8777672465261513564
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,7 +777,18 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: b42181f087212f04d8080849bce33d60, type: 3}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []

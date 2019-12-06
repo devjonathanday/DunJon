@@ -6,23 +6,21 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class Randomizer : MonoBehaviour
+public class Randomizer : Node_Generic
 {
     public TMP_InputField inputField;
     public NodeInput nodeInputPrefab;
-    public NodeOutput output;
-    public List<NodeInput> inputs = new List<NodeInput>();
     [Space(10)]
     public Vector2 startInputPos;
     public float inputSpacing;
     public float defaultNodeHeight;
     public float nodeHeightIncrement;
 
-    private void Awake()
+    void Awake()
     {
-        UpdateNodeInputs();
+        Refresh();
     }
-    public void UpdateNodeInputs()
+    public override void Refresh()
     {
         int count = int.Parse(inputField.text);
         if (count < 2)
@@ -30,13 +28,13 @@ public class Randomizer : MonoBehaviour
             inputField.text = "2";
             count = 2;
         }
-        while(inputs.Count > 0)
+        while (inputs.Count > 0) //Iterate through the lines and delete them when changing size
         {
-            if(inputs[0].lineReference) inputs[0].lineReference.DeleteLine();
+            if (inputs[0].lineReference) inputs[0].lineReference.DeleteLine();
             Destroy(inputs[0].gameObject);
             inputs.Remove(inputs[0]);
         }
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) //Set the positions of the input nodes
         {
             NodeInput newNode = Instantiate(nodeInputPrefab, Vector2.zero, Quaternion.identity);
             newNode.transform.SetParent(transform);
@@ -45,13 +43,10 @@ public class Randomizer : MonoBehaviour
             newNodeRect.anchorMin = Vector2.zero;
             newNodeRect.anchorMax = Vector2.zero;
             newNodeRect.anchoredPosition = startInputPos + (Vector2.up * i * inputSpacing);
-            
+
             inputs.Add(newNode);
         }
+        //Resize the node based on number of input nodes
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, defaultNodeHeight + (nodeHeightIncrement * count));
-    }
-    void Evaluate()
-    {
-        output.value = UnityEngine.Random.Range(0, 1);
     }
 }

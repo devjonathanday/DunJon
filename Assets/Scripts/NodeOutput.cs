@@ -47,6 +47,7 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
                     nodeInput.used = true;
                     nodeInput.inputType = outputType;
                     lineReference.FinishLine(nodeInput);
+                    NodeEditor.Refresh();
                     return;
                 }
                 else if (!nodeInput.used && outputType == nodeInput.inputType)
@@ -54,10 +55,17 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
                     nodeInput.value = value;
                     nodeInput.used = true;
                     lineReference.FinishLine(nodeInput);
+                    NodeEditor.Refresh();
                     return;
                 }
             }
         }
         Destroy(lineReference.gameObject); //Destroy instead of DeleteLine(), because LineConnector's references are not populated yet
+        NodeEditor.Refresh();
+    }
+
+    public void DeleteLines()
+    {
+
     }
 }
