@@ -11,7 +11,7 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
     [SerializeField] public object value;
     public NodeEditor.IOTYPE outputType;
     public LineConnector linePrefab;
-    public LineConnector lineReference;
+    public List<LineConnector> lineReferences = new List<LineConnector>();
 
     void Start()
     {
@@ -20,7 +20,11 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
 
     void Update()
     {
-        if (Input.GetMouseButtonUp(0) && lineReference != null && !lineReference.finished)
+        //Check if:
+        // - Mouse button is released
+        // - There is one or more lines connected to this output
+        // - The last line (most recently created) is not yet finished
+        if (Input.GetMouseButtonUp(0) && lineReferences.Count > 0 && !lineReferences[lineReferences.Count - 1].finished)
         {
             CheckMouseObject();
         }
@@ -30,8 +34,9 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            lineReference = Instantiate(linePrefab);
-            lineReference.StartLine(this);
+            LineConnector newLine = Instantiate(linePrefab);
+            lineReferences.Add(newLine);
+            newLine.StartLine(this);
         }
     }
 
@@ -46,7 +51,7 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
                     nodeInput.value = value;
                     nodeInput.used = true;
                     nodeInput.inputType = outputType;
-                    lineReference.FinishLine(nodeInput);
+                    lineReferences[lineReferences.Count - 1].FinishLine(nodeInput);
                     NodeEditor.Refresh();
                     return;
                 }
@@ -54,18 +59,19 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
                 {
                     nodeInput.value = value;
                     nodeInput.used = true;
-                    lineReference.FinishLine(nodeInput);
+                    lineReferences[lineReferences.Count - 1].FinishLine(nodeInput);
                     NodeEditor.Refresh();
                     return;
                 }
             }
         }
-        Destroy(lineReference.gameObject); //Destroy instead of DeleteLine(), because LineConnector's references are not populated yet
+        Destroy(lineReferences[lineReferences.Count - 1].gameObject);
+        lineReferences.RemoveAt(lineReferences.Count - 1);
         NodeEditor.Refresh();
     }
 
     public void DeleteLines()
     {
-
+        lineReferences.Clear();
     }
 }

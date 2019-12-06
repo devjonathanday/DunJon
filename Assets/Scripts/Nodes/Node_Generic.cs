@@ -17,7 +17,7 @@ public abstract class Node_Generic : MonoBehaviour, IComparable<Node_Generic>, I
             if (inputs[i].lineReference != null) inputs[i].lineReference.DeleteLine();
 
         for (int i = 0; i < outputs.Count; i++)
-            if(outputs[i].lineReference != null) outputs[i].lineReference.DeleteLine();
+            if(outputs[i].lineReferences.Count > 0) outputs[i].DeleteLines();
 
         Destroy(gameObject);
     }

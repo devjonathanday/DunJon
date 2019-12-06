@@ -31,8 +31,12 @@ public class LineConnector : MonoBehaviour
         }
         else
         {
-            line.SetPosition(0, start.transform.position);
-            line.SetPosition(1, end.transform.position);
+            if (start != null && end != null)
+            {
+                line.SetPosition(0, start.transform.position);
+                line.SetPosition(1, end.transform.position);
+            }
+            else DeleteLine();
         }
     }
 
@@ -56,7 +60,7 @@ public class LineConnector : MonoBehaviour
 
         end.used = false;
 
-        start.lineReference = null;
+        start.lineReferences.Remove(this);
         Destroy(gameObject);
     }
     void UpdateLineCollider()
