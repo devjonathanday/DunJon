@@ -1,0 +1,15 @@
+room(8,8)
+zomb(3)
+skel(5)
+endroom
+
+room(5,5)
+endroom
+
+room(3,3)
+endroom
+
+room(5,10)
+zomb(3)
+endroom
+
