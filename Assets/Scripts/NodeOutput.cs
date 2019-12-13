@@ -12,8 +12,9 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
     public NodeEditor.IOTYPE outputType;
     public LineConnector linePrefab;
     public List<LineConnector> lineReferences = new List<LineConnector>();
+    public LayerMask releaseLineLayers;
 
-    void Start()
+    void Awake()
     {
         cam = Camera.main;
     }
@@ -44,9 +45,10 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
     {
         if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, 1000))
         {
+            Debug.Log(hitInfo.collider.gameObject.name);
             if (hitInfo.collider.gameObject.TryGetComponent(out NodeInput nodeInput))
             {
-                if(nodeInput.inputType == NodeEditor.IOTYPE.ANY)
+                if (nodeInput.inputType == NodeEditor.IOTYPE.ANY)
                 {
                     nodeInput.value = value;
                     nodeInput.used = true;
@@ -55,13 +57,24 @@ public class NodeOutput : MonoBehaviour, IPointerDownHandler
                     NodeEditor.Refresh();
                     return;
                 }
-                else if (!nodeInput.used && outputType == nodeInput.inputType)
+                else
                 {
-                    nodeInput.value = value;
-                    nodeInput.used = true;
-                    lineReferences[lineReferences.Count - 1].FinishLine(nodeInput);
-                    NodeEditor.Refresh();
-                    return;
+                    if (!nodeInput.used)
+                    {
+                        if (outputType == nodeInput.inputType)
+                        {
+                            nodeInput.value = value;
+                            nodeInput.used = true;
+                            lineReferences[lineReferences.Count - 1].FinishLine(nodeInput);
+                            NodeEditor.Refresh();
+                            return;
+                        }
+                        else ErrorLogger.ThrowErrorMessage("Output type does not match input type.");
+                    }
+                    else
+                    {
+                        ErrorLogger.ThrowErrorMessage("Input is already connected.");
+                    }
                 }
             }
         }

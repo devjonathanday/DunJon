@@ -22,6 +22,8 @@ public class Randomizer : Node_Generic
     }
     public override void Refresh()
     {
+        #region Resizing
+        
         int count = int.Parse(inputField.text);
         if (count < 2)
         {
@@ -48,5 +50,22 @@ public class Randomizer : Node_Generic
         }
         //Resize the node based on number of input nodes
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, defaultNodeHeight + (nodeHeightIncrement * count));
+
+        #endregion
+
+        #region Process Inputs
+
+        NodeEditor.IOTYPE inputType = inputs[0].inputType;
+
+        for (int i = 1; i < inputs.Count; i++)
+        {
+            if (inputs[i].inputType != inputType)
+            {
+                ErrorLogger.ThrowErrorMessage("Randomizer node cannot process mismatched types.");
+                return;
+            }
+        }
+
+        #endregion
     }
 }

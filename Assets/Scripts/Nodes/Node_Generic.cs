@@ -9,6 +9,7 @@ public abstract class Node_Generic : MonoBehaviour, IComparable<Node_Generic>, I
     public List<NodeInput> inputs = new List<NodeInput>();
     public List<NodeOutput> outputs = new List<NodeOutput>();
     public int priority;
+    public bool fulfilled;
 
     public abstract void Refresh();
     public void DeleteNode()
