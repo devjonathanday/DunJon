@@ -92,4 +92,9 @@ public class Randomizer : Node_Generic
         }
         else return null;
     }
+
+    public override string GetSaveData()
+    {
+        return "randomizer(" + inputs.Count + ")";
+    }
 }

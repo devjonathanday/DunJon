@@ -62,4 +62,9 @@ public class Room_Container : Node_Generic
         }
         else return null;
     }
+
+    public override string GetSaveData()
+    {
+        return "room";
+    }
 }

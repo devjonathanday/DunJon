@@ -8,4 +8,8 @@ public class GraphCompiler : MonoBehaviour
     {
         NodeEditor.Compile();
     }
+    public void SaveGraph()
+    {
+        NodeEditor.SaveGraph();
+    }
 }

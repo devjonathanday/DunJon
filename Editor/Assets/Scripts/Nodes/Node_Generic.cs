@@ -11,6 +11,7 @@ public abstract class Node_Generic : MonoBehaviour, IPointerClickHandler
 
     public abstract bool Refresh();
     public abstract object Evaluate();
+    public abstract string GetSaveData();
     public void DeleteNode()
     {
         for (int i = 0; i < inputs.Count; i++)

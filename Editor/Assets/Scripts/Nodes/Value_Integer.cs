@@ -14,6 +14,11 @@ public class Value_Integer : Node_Generic
         return int.Parse(inputField.text);
     }
 
+    public override string GetSaveData()
+    {
+        return "integer(" + int.Parse(inputField.text) + ")";
+    }
+
     public override bool Refresh()
     {
         if (outputs.Count == 0)
@@ -23,4 +28,5 @@ public class Value_Integer : Node_Generic
         }
         return true;
     }
+
 }
