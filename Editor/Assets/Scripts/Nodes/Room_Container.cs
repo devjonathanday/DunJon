@@ -21,15 +21,22 @@ public class Room_Container : Node_Generic
     {
         if (Refresh())
         {
+            int roomSizeX = 0;
+            int roomSizeY = 0;
+
             if (inputs[0].lineReference == null || inputs[1].lineReference == null)
             {
                 ErrorLogger.ThrowErrorMessage("A room node has missing size parameters.");
                 return null;
             }
-            else if ((int)inputs[0].lineReference.start.attachedNode.Evaluate() == 0 ||
-                     (int)inputs[1].lineReference.start.attachedNode.Evaluate() == 0)
+            else
             {
-                ErrorLogger.ThrowErrorMessage("A room cannot have a size parameter of 0.");
+                roomSizeX = (int)inputs[0].lineReference.start.attachedNode.Evaluate();
+                roomSizeY = (int)inputs[1].lineReference.start.attachedNode.Evaluate();
+            }
+            if (roomSizeX < 3 || roomSizeX > 20 || roomSizeY < 3 || roomSizeY > 20)
+            {
+                ErrorLogger.ThrowErrorMessage("Room size must be between 3 and 20.");
                 return null;
             }
 
@@ -65,6 +72,8 @@ public class Room_Container : Node_Generic
 
     public override string GetSaveData()
     {
-        return "room";
+        if(previousRoomInput == null) return "str";
+        if (nextRoomOutput == null) return "end";
+        return "rom";
     }
 }

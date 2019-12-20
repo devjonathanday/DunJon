@@ -113,6 +113,7 @@ MonoBehaviour:
   - {fileID: 808115151622003069}
   - {fileID: 808115150526739137}
   - {fileID: 808115151399910255}
+  - {fileID: 808115150691993638}
   outputs:
   - {fileID: 8435654597487381968}
   roomObjectInputs:

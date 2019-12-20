@@ -18,8 +18,6 @@ public class Randomizer : Node_Generic
     }
     public override bool Refresh()
     {
-        #region Resizing
-        
         int count = int.Parse(inputField.text);
         if (count < 2)
         {
@@ -47,11 +45,18 @@ public class Randomizer : Node_Generic
         }
         //Resize the node based on number of input nodes
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, defaultNodeHeight + (nodeHeightIncrement * count));
+        
+        return true;
+    }
 
-        #endregion
+    public void Resize(int capacity)
+    {
+        inputs = new List<NodeInput>(capacity);
+        Refresh();
+    }
 
-        #region Process Inputs
-
+    public override object Evaluate()
+    {
         NodeEditor.IOTYPE inputType = NodeEditor.IOTYPE.ANY;
 
         for (int i = 0; i < inputs.Count; i++)
@@ -60,41 +65,30 @@ public class Randomizer : Node_Generic
             {
                 //Abort
                 ErrorLogger.ThrowErrorMessage("Randomizer node is missing inputs.");
-                return false;
+                return null;
             }
             else if (i != 0)
             {
                 if (inputs[i].inputType != inputType) //Check if we have mismatched input types
                 {
                     //Abort
-                    ErrorLogger.ThrowErrorMessage("Randomizer node is missing inputs.");
-                    return false;
+                    ErrorLogger.ThrowErrorMessage("Randomizer node cannot have mismatched input types.");
+                    return null;
                 }
             }
             else inputType = inputs[i].inputType; //Set the inputType to the first input, if applicable
         }
-        return true; //Success
-
-        #endregion
-    }
-
-    public override object Evaluate()
-    {
-        if (Refresh())
-        {
-            //Initialize list of objects to be chosen from
-            List<object> inputObjects = new List<object>();
-            //Add the evaluated value of the input to the list
-            for (int i = 0; i < inputs.Count; i++)
-                inputObjects.Add(inputs[i].lineReference.start.attachedNode.Evaluate());
-            //Choose an input 'randomly'
-            return inputObjects[Random.Range(0, inputs.Count)];
-        }
-        else return null;
+        //Initialize list of objects to be chosen from
+        List<object> inputObjects = new List<object>();
+        //Add the evaluated value of the input to the list
+        for (int i = 0; i < inputs.Count; i++)
+            inputObjects.Add(inputs[i].lineReference.start.attachedNode.Evaluate());
+        //Choose an input 'randomly'
+        return inputObjects[Random.Range(0, inputs.Count)];
     }
 
     public override string GetSaveData()
     {
-        return "randomizer(" + inputs.Count + ")";
+        return "rng," + inputs.Count + ",";
     }
 }

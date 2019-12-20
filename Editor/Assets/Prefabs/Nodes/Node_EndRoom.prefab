@@ -933,6 +933,7 @@ MonoBehaviour:
   inputs:
   - {fileID: 6924005164399176902}
   - {fileID: 4876908173360896072}
+  - {fileID: 2234093155910698298}
   outputs: []
   roomObjectInputs: []
   previousRoomInput: {fileID: 2234093155910698298}

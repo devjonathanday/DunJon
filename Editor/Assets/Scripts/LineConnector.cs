@@ -50,7 +50,7 @@ public class LineConnector : MonoBehaviour
         end = endObject;
         end.used = true;
         end.lineReference = this;
-        end.value = start.value;
+        //end.value = start.value;
         finished = true;
     }
     public void DeleteLine()

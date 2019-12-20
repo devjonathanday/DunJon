@@ -32,10 +32,10 @@ public class Node_Enemy : Node_Generic
         switch(enemyType)
         {
             case ENEMYTYPE.SKELETON:
-                return "skel(" + health + ")";
+                return "skl," + health;
 
             case ENEMYTYPE.ZOMBIE:
-                return "zomb(" + health + ")";
+                return "zmb," + health;
         }
         return string.Empty;
     }

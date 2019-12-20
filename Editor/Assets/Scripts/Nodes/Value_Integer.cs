@@ -16,7 +16,7 @@ public class Value_Integer : Node_Generic
 
     public override string GetSaveData()
     {
-        return "integer(" + int.Parse(inputField.text) + ")";
+        return "int," + int.Parse(inputField.text);
     }
 
     public override bool Refresh()
