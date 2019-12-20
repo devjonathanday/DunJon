@@ -8,15 +8,16 @@ public class RoomGenerator : MonoBehaviour
     public GameObject skeletonPrefab;
     public GameObject zombiePrefab;
     [Header("Environment")]
+
     public Transform frontWall;
     public Transform leftWall;
     public Transform rightWall;
     public Transform backWall;
 
-    void Start()
-    {
-
-    }
+    public GameObject frontDoor;
+    public GameObject leftDoor;
+    public GameObject rightDoor;
+    public GameObject backDoor;
     
     void Update()
     {
@@ -27,10 +28,8 @@ public class RoomGenerator : MonoBehaviour
     void CreateRoom(int sizeX, int sizeY, GameObject[] objects)
     {
         frontWall.position = (Vector3.forward  * ((float)sizeY / 2)) + (Vector3.up * 10);
-        leftWall.position =  (-Vector3.right   * ((float)sizeX / 2)) + (Vector3.up * 10);
+        leftWall.position  = (-Vector3.right   * ((float)sizeX / 2)) + (Vector3.up * 10);
         rightWall.position = (Vector3.right    * ((float)sizeX / 2)) + (Vector3.up * 10);
-        backWall.position =  (-Vector3.forward * ((float)sizeY / 2)) + (Vector3.up * 10);
+        backWall.position  = (-Vector3.forward * ((float)sizeY / 2)) + (Vector3.up * 10);
     }
 }
-
-//TODO figure out object spawning inside rooms, minimum room size is 3, max is 20

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Globalization;
+using SFB;
 
 public static class NodeEditor
 {
@@ -14,28 +15,48 @@ public static class NodeEditor
         //Refresh all nodes and lines to have their values read
         if (Refresh())
         {
-            //Get all nodes in the scene
-            List<Room_Container> nodes = new List<Room_Container>(Object.FindObjectsOfType<Room_Container>());
-            //StreamWriter writer = new StreamWriter(new FileStream(Application.streamingAssetsPath + "/dungeon.txt", FileMode.OpenOrCreate, FileAccess.Write));
-            StreamWriter writer = new StreamWriter(Application.streamingAssetsPath + "/dungeon.txt", false);
+            //Initialize buffer for data to be written to the file
+            string tempResult = "";
 
             bool failedCompilation = false;
 
-            for (int i = 0; i < nodes.Count; i++)//Iterate through all the nodes
+            GameObject[] start = GameObject.FindGameObjectsWithTag("StartRoom");
+            if(start.Length != 1)
             {
-                if (nodes[i].Evaluate() != null)
-                    writer.WriteLine((string)nodes[i].Evaluate());
-                else failedCompilation = true;
+                ErrorLogger.ThrowErrorMessage("Dungeon layout must have 1 start room.");
+                failedCompilation = true;
             }
-            
-            writer.Flush();
-            writer.Close();
+            Room_Container currentRoom = start[0].GetComponent<Room_Container>();
+
+            while(currentRoom.nextRoomOutput != null)
+            {
+                object result = currentRoom.Evaluate();
+                if (result != null)
+                    tempResult += (string)result + "\n";
+                else
+                {
+                    failedCompilation = true;
+                    /*Originally did not break out of the while loop, so as to log errors for all nodes before quitting.
+                    However, in an attempt to clear some game-breaking bugs, I've sacrificed creature comforts for code stability.
+                    therefore,*/ break;
+                }
+
+                currentRoom = currentRoom.nextRoomOutput.lineReferences[0].end.attachedNode.GetComponent<Room_Container>();
+            }
 
             if (failedCompilation)
             {
                 ErrorLogger.ThrowErrorMessage("Compilation failed.");
                 return;
             }
+
+            string path = StandaloneFileBrowser.SaveFilePanel("Save Dungeon", "", "", "jon");
+            StreamWriter writer = new StreamWriter(path, false);
+            writer.Write(tempResult);
+
+            writer.Flush();
+            writer.Close();
+            
         }
         ErrorLogger.ThrowSuccessMessage("Compilation succeeded!");
     }

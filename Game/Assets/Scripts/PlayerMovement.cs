@@ -16,6 +16,10 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody rBody;
     public float simulatedDrag;
 
+    [Header("Animation")]
+    public Animator animator;
+    public float maxIdleVelocity;
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -50,6 +54,10 @@ public class PlayerMovement : MonoBehaviour
         velocity.x *= simulatedDrag;
         velocity.z *= simulatedDrag;
         rBody.velocity = velocity;
+
+        if (rBody.velocity.sqrMagnitude > maxIdleVelocity)
+            animator.SetBool("Walking", true);
+        else animator.SetBool("Walking", false);
 
         #endregion
     }

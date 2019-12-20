@@ -1019,6 +1019,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NodeOutput
       objectReference: {fileID: 0}
+    - target: {fileID: 8759716989996203937, guid: ec038056d7da79f48870272ebd1816e2,
+        type: 3}
+      propertyPath: attachedNode
+      value: 
+      objectReference: {fileID: 4461312101938946407}
     - target: {fileID: 8759716989996203932, guid: ec038056d7da79f48870272ebd1816e2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1124,11 +1129,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 8759716989996203937, guid: ec038056d7da79f48870272ebd1816e2,
-        type: 3}
-      propertyPath: attachedNode
-      value: 
-      objectReference: {fileID: 4461312101938946407}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec038056d7da79f48870272ebd1816e2, type: 3}
 --- !u!114 &7001066769183117828 stripped
@@ -1161,6 +1161,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NodeInput
       objectReference: {fileID: 0}
+    - target: {fileID: 555828872104121865, guid: cda77f24d92eeaf41936c752390f4d38,
+        type: 3}
+      propertyPath: attachedNode
+      value: 
+      objectReference: {fileID: 4461312101938946407}
     - target: {fileID: 6496869172146474757, guid: cda77f24d92eeaf41936c752390f4d38,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using SFB;
 
 public class GraphIO : MonoBehaviour
 {
@@ -74,131 +75,139 @@ public class GraphIO : MonoBehaviour
             }
         }
 
-        StreamWriter writer = new StreamWriter(Application.streamingAssetsPath + "/graph.txt", false);
+        string path = StandaloneFileBrowser.SaveFilePanel("Save Node Graph", "", "", "dun");
+        if (path != string.Empty)
+        {
+            StreamWriter writer = new StreamWriter(path, false);
 
-        for (int i = 0; i < nodes.Length; i++)
-            writer.WriteLine("N," + i + "," + nodes[i].GetSaveData() + "," + nodes[i].transform.position.x + "," + nodes[i].transform.position.y);
+            for (int i = 0; i < nodes.Length; i++)
+                writer.WriteLine("N," + i + "," + nodes[i].GetSaveData() + "," + nodes[i].transform.position.x + "," + nodes[i].transform.position.y);
 
-        writer.Write("\n");
+            writer.Write("\n");
 
-        foreach (KeyValuePair<LineConnector, LineInfo> entry in lines)
-            writer.WriteLine("L," + entry.Value.startNodeID + "," + entry.Value.startIndex + "," + entry.Value.endNodeID + "," + entry.Value.endIndex);
+            foreach (KeyValuePair<LineConnector, LineInfo> entry in lines)
+                writer.WriteLine("L," + entry.Value.startNodeID + "," + entry.Value.startIndex + "," + entry.Value.endNodeID + "," + entry.Value.endIndex);
 
-        writer.Flush();
-        writer.Close();
+            writer.Flush();
+            writer.Close();
+        }
+        else ErrorLogger.ThrowErrorMessage("File not selected.");
     }
 
     public void LoadGraph()
     {
-        if (File.Exists(Application.streamingAssetsPath + "/graph.txt"))
+        string[] paths = StandaloneFileBrowser.OpenFilePanel("Open Node Graph", "", "dun", false);
+        if(paths.Length == 0)
         {
-            StreamReader reader = new StreamReader(Application.streamingAssetsPath + "/graph.txt");
+            ErrorLogger.ThrowErrorMessage("File not selected.");
+            return;
+        }
 
-            //Delete all existing nodes before spawning new ones
-            Node_Generic[] tempNodes = FindObjectsOfType<Node_Generic>();
-            for (int i = 0; i < tempNodes.Length; i++)
-                tempNodes[i].DeleteNode();
-            
-            List<Node_Generic> nodes = new List<Node_Generic>();
+        StreamReader reader = new StreamReader(paths[0]);
 
-            try
+        //Delete all existing nodes before spawning new ones
+        Node_Generic[] tempNodes = FindObjectsOfType<Node_Generic>();
+        for (int i = 0; i < tempNodes.Length; i++)
+            tempNodes[i].DeleteNode();
+
+        List<Node_Generic> nodes = new List<Node_Generic>();
+
+        try
+        {
+            string line;
+            while ((line = reader.ReadLine()) != null)
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                if (line.Length == 0) continue;
+
+                if (line[0] == 'N')
                 {
-                    if (line.Length == 0) continue;
-
-                    if (line[0] == 'N')
+                    string[] frags = line.Split(',');
+                    switch (frags[2])
                     {
-                        string[] frags = line.Split(',');
-                        switch(frags[2])
-                        {
-                            case "int":
-                                {
-                                    Value_Integer newNode = Instantiate(node_integer, new Vector3(float.Parse(frags[4]), float.Parse(frags[5]), 0), Quaternion.identity).GetComponent<Value_Integer>();
-                                    newNode.inputField.text = frags[3];
-                                    newNode.transform.SetParent(worldCanvas);
-                                    nodes.Add(newNode);
-                                }
-                                break;
-                            case "rom":
-                                {
-                                    Node_Generic newNode = Instantiate(node_room, new Vector3(float.Parse(frags[3]), float.Parse(frags[4]), 0), Quaternion.identity).GetComponent<Node_Generic>();
-                                    newNode.transform.SetParent(worldCanvas);
-                                    nodes.Add(newNode);
-                                }
-                                break;
-                            case "str":
-                                {
-                                    Node_Generic newNode = Instantiate(node_start, new Vector3(float.Parse(frags[3]), float.Parse(frags[4]), 0), Quaternion.identity).GetComponent<Node_Generic>();
-                                    newNode.transform.SetParent(worldCanvas);
-                                    nodes.Add(newNode);
-                                }
-                                break;
-                            case "end":
-                                {
-                                    Node_Generic newNode = Instantiate(node_end, new Vector3(float.Parse(frags[3]), float.Parse(frags[4]), 0), Quaternion.identity).GetComponent<Node_Generic>();
-                                    newNode.transform.SetParent(worldCanvas);
-                                    nodes.Add(newNode);
-                                }
-                                break;
-                            case "rng":
-                                {
-                                    Randomizer newNode = Instantiate(node_randomizer, new Vector3(float.Parse(frags[4]), float.Parse(frags[5]), 0), Quaternion.identity).GetComponent<Randomizer>();
-                                    newNode.transform.SetParent(worldCanvas);
-                                    newNode.Resize(int.Parse(frags[3]));
+                        case "int":
+                            {
+                                Value_Integer newNode = Instantiate(node_integer, new Vector3(float.Parse(frags[4]), float.Parse(frags[5]), 0), Quaternion.identity).GetComponent<Value_Integer>();
+                                newNode.inputField.text = frags[3];
+                                newNode.transform.SetParent(worldCanvas);
+                                nodes.Add(newNode);
+                            }
+                            break;
+                        case "rom":
+                            {
+                                Node_Generic newNode = Instantiate(node_room, new Vector3(float.Parse(frags[3]), float.Parse(frags[4]), 0), Quaternion.identity).GetComponent<Node_Generic>();
+                                newNode.transform.SetParent(worldCanvas);
+                                nodes.Add(newNode);
+                            }
+                            break;
+                        case "str":
+                            {
+                                Node_Generic newNode = Instantiate(node_start, new Vector3(float.Parse(frags[3]), float.Parse(frags[4]), 0), Quaternion.identity).GetComponent<Node_Generic>();
+                                newNode.transform.SetParent(worldCanvas);
+                                nodes.Add(newNode);
+                            }
+                            break;
+                        case "end":
+                            {
+                                Node_Generic newNode = Instantiate(node_end, new Vector3(float.Parse(frags[3]), float.Parse(frags[4]), 0), Quaternion.identity).GetComponent<Node_Generic>();
+                                newNode.transform.SetParent(worldCanvas);
+                                nodes.Add(newNode);
+                            }
+                            break;
+                        case "rng":
+                            {
+                                Randomizer newNode = Instantiate(node_randomizer, new Vector3(float.Parse(frags[4]), float.Parse(frags[5]), 0), Quaternion.identity).GetComponent<Randomizer>();
+                                newNode.transform.SetParent(worldCanvas);
+                                newNode.Resize(int.Parse(frags[3]));
 
-                                    nodes.Add(newNode);
-                                }
-                                break;
-                            case "skl":
-                                {
-                                    Node_Enemy newNode = Instantiate(node_skeleton, new Vector3(float.Parse(frags[4]), float.Parse(frags[5]), 0), Quaternion.identity).GetComponent<Node_Enemy>();
-                                    newNode.health = int.Parse(frags[3]);
-                                    newNode.enemyType = Node_Enemy.ENEMYTYPE.SKELETON;
-                                    newNode.transform.SetParent(worldCanvas);
-                                    nodes.Add(newNode);
-                                }
-                                break;
-                            case "zmb":
-                                {
-                                    Node_Enemy newNode = Instantiate(node_zombie, new Vector3(float.Parse(frags[4]), float.Parse(frags[5]), 0), Quaternion.identity).GetComponent<Node_Enemy>();
-                                    newNode.health = int.Parse(frags[3]);
-                                    newNode.enemyType = Node_Enemy.ENEMYTYPE.ZOMBIE;
-                                    newNode.transform.SetParent(worldCanvas);
-                                    nodes.Add(newNode);
-                                }
-                                break;
-                            default:
-                                {
-                                    ErrorLogger.ThrowErrorMessage("Graph could not be loaded correctly.");
-                                    return;
-                                }
-                        }
-                    }
-                    else if (line[0] == 'L')
-                    {
-                        string[] frags = line.Split(',');
-
-                        //startNodeID = int.Parse(frags[1]);
-                        //outputIndex = int.Parse(frags[2]);
-                        //endNodeID   = int.Parse(frags[3]);
-                        //inputIndex  = int.Parse(frags[4]);
-
-                        LineConnector newLine = Instantiate(lineConnectorPrefab, Vector3.zero, Quaternion.identity).GetComponent<LineConnector>();
-                        newLine.StartLine(nodes[int.Parse(frags[1])].outputs[int.Parse(frags[2])]);
-                        newLine.FinishLine(nodes[int.Parse(frags[3])].inputs[int.Parse(frags[4])]);
+                                nodes.Add(newNode);
+                            }
+                            break;
+                        case "skl":
+                            {
+                                Node_Enemy newNode = Instantiate(node_skeleton, new Vector3(float.Parse(frags[4]), float.Parse(frags[5]), 0), Quaternion.identity).GetComponent<Node_Enemy>();
+                                newNode.health = int.Parse(frags[3]);
+                                newNode.enemyType = Node_Enemy.ENEMYTYPE.SKELETON;
+                                newNode.transform.SetParent(worldCanvas);
+                                nodes.Add(newNode);
+                            }
+                            break;
+                        case "zmb":
+                            {
+                                Node_Enemy newNode = Instantiate(node_zombie, new Vector3(float.Parse(frags[4]), float.Parse(frags[5]), 0), Quaternion.identity).GetComponent<Node_Enemy>();
+                                newNode.health = int.Parse(frags[3]);
+                                newNode.enemyType = Node_Enemy.ENEMYTYPE.ZOMBIE;
+                                newNode.transform.SetParent(worldCanvas);
+                                nodes.Add(newNode);
+                            }
+                            break;
+                        default:
+                            {
+                                ErrorLogger.ThrowErrorMessage("Graph could not be loaded correctly.");
+                                return;
+                            }
                     }
                 }
+                else if (line[0] == 'L')
+                {
+                    string[] frags = line.Split(',');
 
-                NodeEditor.Refresh();
+                    //startNodeID = int.Parse(frags[1]);
+                    //outputIndex = int.Parse(frags[2]);
+                    //endNodeID   = int.Parse(frags[3]);
+                    //inputIndex  = int.Parse(frags[4]);
+
+                    LineConnector newLine = Instantiate(lineConnectorPrefab, Vector3.zero, Quaternion.identity).GetComponent<LineConnector>();
+                    newLine.StartLine(nodes[int.Parse(frags[1])].outputs[int.Parse(frags[2])]);
+                    newLine.FinishLine(nodes[int.Parse(frags[3])].inputs[int.Parse(frags[4])]);
+                }
             }
-            catch (System.Exception e)
-            {
-                ErrorLogger.ThrowErrorMessage(e.Message);
-            }
+
+            NodeEditor.Refresh();
         }
-        else ErrorLogger.ThrowErrorMessage("Graph has not been saved, or does not exist.");
+        catch (System.Exception e)
+        {
+            ErrorLogger.ThrowErrorMessage(e.Message);
+        }
     }
 
     public void Compile()

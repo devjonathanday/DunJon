@@ -87,6 +87,7 @@ MonoBehaviour:
   used: 0
   inputType: 1
   lineReference: {fileID: 0}
+  attachedNode: {fileID: 4906937117292214333}
 --- !u!65 &4433852649491707394
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -187,6 +188,7 @@ MonoBehaviour:
   used: 0
   inputType: 1
   lineReference: {fileID: 0}
+  attachedNode: {fileID: 4906937117292214333}
 --- !u!65 &2175649116401107596
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -950,6 +952,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: NodeInput
       objectReference: {fileID: 0}
+    - target: {fileID: 555828872104121865, guid: cda77f24d92eeaf41936c752390f4d38,
+        type: 3}
+      propertyPath: inputType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 555828872104121865, guid: cda77f24d92eeaf41936c752390f4d38,
+        type: 3}
+      propertyPath: attachedNode
+      value: 
+      objectReference: {fileID: 4906937117292214333}
     - target: {fileID: 6496869172146474757, guid: cda77f24d92eeaf41936c752390f4d38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1054,11 +1066,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 555828872104121865, guid: cda77f24d92eeaf41936c752390f4d38,
-        type: 3}
-      propertyPath: inputType
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6496869172146474810, guid: cda77f24d92eeaf41936c752390f4d38,
         type: 3}

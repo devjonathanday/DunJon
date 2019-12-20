@@ -87,6 +87,7 @@ MonoBehaviour:
   used: 0
   inputType: 1
   lineReference: {fileID: 0}
+  attachedNode: {fileID: 6678651081472315288}
 --- !u!65 &2684024394420748711
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -187,6 +188,7 @@ MonoBehaviour:
   used: 0
   inputType: 1
   lineReference: {fileID: 0}
+  attachedNode: {fileID: 6678651081472315288}
 --- !u!65 &470293907900806441
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -215,7 +217,7 @@ GameObject:
   - component: {fileID: 6678651081472315288}
   m_Layer: 5
   m_Name: Node_StartRoom
-  m_TagString: Untagged
+  m_TagString: StartRoom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -950,6 +952,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: NodeOutput
       objectReference: {fileID: 0}
+    - target: {fileID: 8759716989996203937, guid: ec038056d7da79f48870272ebd1816e2,
+        type: 3}
+      propertyPath: outputType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759716989996203937, guid: ec038056d7da79f48870272ebd1816e2,
+        type: 3}
+      propertyPath: attachedNode
+      value: 
+      objectReference: {fileID: 6678651081472315288}
     - target: {fileID: 8759716989996203932, guid: ec038056d7da79f48870272ebd1816e2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1060,16 +1072,6 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8759716989996203937, guid: ec038056d7da79f48870272ebd1816e2,
-        type: 3}
-      propertyPath: outputType
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8759716989996203937, guid: ec038056d7da79f48870272ebd1816e2,
-        type: 3}
-      propertyPath: attachedNode
-      value: 
-      objectReference: {fileID: 6678651081472315288}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec038056d7da79f48870272ebd1816e2, type: 3}
 --- !u!224 &1518845362711853754 stripped
