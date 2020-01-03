@@ -40,9 +40,9 @@ public class Room_Container : Node_Generic
                 return null;
             }
 
-            string returnString = "room(";
+            string returnString = GetSaveData() + ",";
             returnString += inputs[0].lineReference.start.attachedNode.Evaluate().ToString() + ",";
-            returnString += inputs[1].lineReference.start.attachedNode.Evaluate().ToString() + ")\n";
+            returnString += inputs[1].lineReference.start.attachedNode.Evaluate().ToString() + ",";
 
             for (int i = 0; i < roomObjectInputs.Length; i++)
             {
@@ -54,17 +54,17 @@ public class Room_Container : Node_Generic
                         switch (enemy.enemyType)
                         {
                             case Node_Enemy.ENEMYTYPE.SKELETON:
-                                returnString += "skel(" + enemy.health + ")\n";
+                                returnString += "skl," + enemy.health + ",";
                                 break;
                             case Node_Enemy.ENEMYTYPE.ZOMBIE:
-                                returnString += "zomb(" + enemy.health + ")\n";
+                                returnString += "zmb," + enemy.health + ",";
                                 break;
                         }
                     }
                 }
             }
 
-            returnString += "endroom\n";
+            returnString += "ext";
             return returnString;
         }
         else return null;

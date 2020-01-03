@@ -28,20 +28,31 @@ public static class NodeEditor
             }
             Room_Container currentRoom = start[0].GetComponent<Room_Container>();
 
+            //Begin at StartRoom, then iterate through rooms until EndRoom is found
             while(currentRoom.nextRoomOutput != null)
             {
-                object result = currentRoom.Evaluate();
-                if (result != null)
-                    tempResult += (string)result + "\n";
+                if (currentRoom.nextRoomOutput.lineReferences.Count > 0)
+                {
+                    object result = currentRoom.Evaluate();
+                    if (result != null)
+                        tempResult += (string)result + "\n";
+                    else
+                    {
+                        failedCompilation = true;
+                        /*Originally did not break out of the while loop, so as to log errors for all nodes before quitting.
+                        However, in an attempt to clear some game-breaking bugs, I've sacrificed creature comforts for code stability.
+                        therefore,*/
+                        break;
+                    }
+
+                    currentRoom = currentRoom.nextRoomOutput.lineReferences[0].end.attachedNode.GetComponent<Room_Container>();
+                }
                 else
                 {
+                    ErrorLogger.ThrowErrorMessage("A room exists with no next room attached.");
                     failedCompilation = true;
-                    /*Originally did not break out of the while loop, so as to log errors for all nodes before quitting.
-                    However, in an attempt to clear some game-breaking bugs, I've sacrificed creature comforts for code stability.
-                    therefore,*/ break;
+                    break;
                 }
-
-                currentRoom = currentRoom.nextRoomOutput.lineReferences[0].end.attachedNode.GetComponent<Room_Container>();
             }
 
             if (failedCompilation)
@@ -50,13 +61,27 @@ public static class NodeEditor
                 return;
             }
 
-            string path = StandaloneFileBrowser.SaveFilePanel("Save Dungeon", "", "", "jon");
+            //EndRoom
+            object end = currentRoom.Evaluate();
+            if (end != null)
+                tempResult += (string)end;
+            else
+            {
+                ErrorLogger.ThrowErrorMessage("Compilation failed.");
+                return;
+            }
+
+            string path = StandaloneFileBrowser.SaveFilePanel("Compile Dungeon", "", "", "jon");
             StreamWriter writer = new StreamWriter(path, false);
             writer.Write(tempResult);
 
             writer.Flush();
             writer.Close();
-            
+        }
+        else
+        {
+            ErrorLogger.ThrowErrorMessage("Compilation failed.");
+            return;
         }
         ErrorLogger.ThrowSuccessMessage("Compilation succeeded!");
     }

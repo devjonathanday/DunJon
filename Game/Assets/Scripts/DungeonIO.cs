@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using SFB;
+using System.IO;
 
 public class DungeonIO : MonoBehaviour
 {
@@ -13,10 +14,41 @@ public class DungeonIO : MonoBehaviour
         //Spawn everything using RoomGenerator.CreateRoom(),
         //then reposition them based on sizes as described below
     }
-    
+
     void Update()
     {
-        
+
+    }
+
+    void LoadDungeon()
+    {
+        string[] paths = StandaloneFileBrowser.OpenFilePanel("Load Dungeon", "", "jon", false);
+        if (paths.Length == 0)
+        {
+            //Throw "file not selected" error. Or, just do nothing
+            return;
+        }
+        else
+        {
+            StreamReader reader = new StreamReader(paths[0]);
+            string line;
+            while((line = reader.ReadLine()) != null)
+            {
+                if (line.Length == 0) continue;
+
+                string[] frags = line.Split(',');
+
+                switch(frags[0])
+                {
+                    case "str":
+                        break;
+                    case "rom":
+                        break;
+                    case "end":
+                        break;
+                }
+            }
+        }
     }
 }
 
