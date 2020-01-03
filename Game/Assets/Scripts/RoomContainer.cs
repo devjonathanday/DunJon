@@ -8,19 +8,4 @@ public class RoomContainer : MonoBehaviour
     public Transform leftWall;
     public Transform rightWall;
     public Transform backWall;
-
-    public GameObject frontDoor;
-    public GameObject leftDoor;
-    public GameObject rightDoor;
-    public GameObject backDoor;
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 }

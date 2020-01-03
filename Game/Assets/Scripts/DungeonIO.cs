@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SFB;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public enum EnemyType { ZOMBIE, SKELETON }
 public class Enemy
@@ -20,7 +21,7 @@ public class Enemy
 public class DungeonRoom
 {
     public Vector2 size;
-    public List<Enemy> enemies;
+    public List<Enemy> enemies = new List<Enemy>();
 }
 
 public class DungeonIO : MonoBehaviour
@@ -43,7 +44,7 @@ public class DungeonIO : MonoBehaviour
         if (paths.Length == 0) return;
         LoadDungeon(paths[0]);
     }
-    public List<DungeonRoom> LoadDungeon(string path)
+    public void LoadDungeon(string path)
     {
         rooms.Clear();
         try
@@ -107,16 +108,9 @@ public class DungeonIO : MonoBehaviour
         {
             errorObject.SetActive(true);
             print(e);
-            return null;
+            return;
         }
-        return rooms;
-    }
-
-    public void SpawnDungeon()
-    {
-        for (int i = 0; i < rooms.Count; i++)
-        {
-
-        }
+        SceneManager.LoadScene("BaseGame");
+        Screen.SetResolution(Screen.width, Screen.height, Screen.fullScreen);
     }
 }
